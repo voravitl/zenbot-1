@@ -20,9 +20,6 @@ module.exports = {
     this.option('down','down', Number, 1)
 
     // MACD / TA_MACD
-    //this.option('period', 'period length, same as --period_length', String, '1h')
-    //this.option('period_length', 'period length, same as --period', String, '1h')
-    //this.option('min_periods', 'min. number of history periods', Number, 52)
     this.option('ema_short_period', 'number of periods for the shorter EMA', Number, 12)
     this.option('ema_long_period', 'number of periods for the longer EMA', Number, 26)
     this.option('signal_period', 'number of periods for the signal EMA', Number, 9)
@@ -32,16 +29,12 @@ module.exports = {
     this.option('overbought_rsi', 'sold when RSI exceeds this value', Number, 70)
 
     // ETHLERS_FT
-    //this.option('period', 'period length, same as --period_length', String, '30m')
-    //this.option('period_length', 'period length, same as --period', String, '30m')
     this.option('fish_pct_change', 'percent change of fisher transform for reversal', Number, 0)
     this.option('length', 'number of past periods to use including current', Number, 10)
     this.option('src', 'use period.close if not defined. can be hl2, hlc3, ohlc4, HAhlc3, HAohlc4', String, 'hl2')
     this.option('pos_length', 'check this number of previous periods have opposing pos value', Number, 1)
 
     // MOMENTUM
-    //this.option('period', 'period length, same as --period_length', String, '1h')
-    //this.option('period_length', 'period length, same as --period', String, '1h')
     this.option('momentum_size', 'number of periods to look back for momentum', Number, 5)
   },
 
@@ -81,8 +74,15 @@ module.exports = {
     s.signal = null
     if(totalBuy >= 2 && totalBuy >= totalSell && totalSell == 0)
       s.signal = 'buy'
+      if ( s.signal = 'buy' ) {
+        console.log(('\ntotalBuy:  ' + totalBuy + '  preparing to buy\n').cyan)
+      }
+
     if(totalSell >= 2 && totalSell >= totalBuy && totalBuy == 0)
       s.signal = 'sell'
+      if ( s.signal = 'sell') {
+        console.log(('\ntotalSell:  ' + totalSell + '  preparing to sell\n').cyan)
+      }
 
     if(s.signal == 'buy' && s.stopTriggered) {
       s.stopTriggered = false
@@ -106,14 +106,7 @@ module.exports = {
     markdown_buy_pct: Phenotypes.RangeFloat(-1, 5),
     markup_sell_pct: Phenotypes.RangeFloat(-1, 5),
     order_type: Phenotypes.ListOption(['maker', 'taker']),
-    //sell_stop_pct: Phenotypes.Range0(1, 50),
-    //buy_stop_pct: Phenotypes.Range0(1, 50),
-    //profit_stop_enable_pct: Phenotypes.Range0(1, 20),
-    //profit_stop_pct: Phenotypes.Range(1,20),
     sell_stop_pct: Phenotypes.RangeFloat(0.4, 0.6),
-    //profit_stop_enable_pct: Phenotypes.RangeFloat(0.5, 1),
-    //quarentine_time: Phenotypes.ListOption([240, 270, 300]),
-
     // macd
     ema_short_period: Phenotypes.Range(1, 20),
     ema_long_period: Phenotypes.Range(20, 100),
@@ -128,9 +121,7 @@ module.exports = {
     fish_pct_change: Phenotypes.Range(-25, 75),
     pos_length: Phenotypes.Range(1, 6),
     src: Phenotypes.ListOption(['close', 'hl2', 'hlc3', 'ohlc4', 'HAhlc3', 'HAohlc4']),
-
     // momentum
     momentum_size: Phenotypes.Range(1,20)
   }
 }
-
