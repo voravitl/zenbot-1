@@ -1,5 +1,6 @@
 var pivot = require('../pivot/strategy')
-var macd = require('../macd/strategy')
+//var macd = require('../macd/strategy')
+var macd = require('../../../lib/ta_macd')
 var ehlers_ft = require('../ehlers_ft/strategy')
 var momentum = require('../momentum/strategy')
 
