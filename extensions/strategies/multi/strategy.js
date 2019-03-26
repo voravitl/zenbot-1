@@ -1,6 +1,6 @@
 var pivot = require('../pivot/strategy')
 //var macd = require('../macd/strategy')
-var macd = require('../../../lib/ta_macd')
+var ta_macd = require('../../../lib/ta_macd')
 var ehlers_ft = require('../ehlers_ft/strategy')
 var momentum = require('../momentum/strategy')
 
@@ -21,6 +21,7 @@ module.exports = {
     this.option('down','down', Number, 1)
 
     // MACD / TA_MACD
+    this.option('min_periods', 'min. number of history periods', Number, 52)
     this.option('ema_short_period', 'number of periods for the shorter EMA', Number, 12)
     this.option('ema_long_period', 'number of periods for the longer EMA', Number, 26)
     this.option('signal_period', 'number of periods for the signal EMA', Number, 9)
@@ -41,7 +42,7 @@ module.exports = {
 
   calculate: function (s) {
     pivot.calculate(s)
-    macd.calculate(s)
+    ta_macd.calculate(s)
     ehlers_ft.calculate(s)
     momentum.calculate(s)
   },
@@ -56,7 +57,7 @@ module.exports = {
       if(s.signal == 'sell') 
         totalSell += 1
     }
-    macd.onPeriod(s, function(){})
+    ta_macd.onPeriod(s, function(){})
     if(s.signal == 'buy') 
       totalBuy += 1
     if(s.signal == 'sell') 
@@ -97,7 +98,7 @@ module.exports = {
 
   onReport: function (s) {
     var cols = []
-    return cols.concat(pivot.onReport(s), macd.onReport(s), ehlers_ft.onReport(s), momentum.onReport(s))
+    return cols.concat(pivot.onReport(s), ta_macd.onReport(s), ehlers_ft.onReport(s), momentum.onReport(s))
   },
 
   phenotypes: {
